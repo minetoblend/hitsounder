@@ -1,0 +1,11 @@
+﻿{
+  "solution": {
+    "path": "Hitsounder.sln",
+    "projects": [
+      "Hitsounder.Desktop\\Hitsounder.Desktop.csproj",
+      "Hitsounder.Game\\Hitsounder.Game.csproj",
+      "Hitsounder.Game.Tests\\Hitsounder.Game.Tests.csproj",
+      "Hitsounder.Resources\\Hitsounder.Resources.csproj"
+    ]
+  }
+}
