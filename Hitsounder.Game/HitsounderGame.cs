@@ -1,17 +1,21 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Cursor;
 using osu.Framework.Screens;
 
 namespace Hitsounder.Game
 {
     public partial class HitsounderGame : HitsounderGameBase
     {
-        private ScreenStack screenStack;
+        private ScreenStack screenStack = null!;
 
         [BackgroundDependencyLoader]
         private void load()
         {
-            Child = screenStack = new ScreenStack { RelativeSizeAxes = Axes.Both };
+            Child = new BasicContextMenuContainer
+            {
+                Child = screenStack = new ScreenStack { RelativeSizeAxes = Axes.Both }
+            };
         }
     }
 }

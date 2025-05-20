@@ -1,11 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <WarningsAsErrors>Nullable</WarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Hitsounder.Resources\Hitsounder.Resources.csproj"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="ppy.osu.Framework" Version="2025.419.0"/>
+        <PackageReference Include="ppy.osu.Game" Version="2025.424.0" />
     </ItemGroup>
 </Project>
