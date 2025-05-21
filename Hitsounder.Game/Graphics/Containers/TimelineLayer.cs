@@ -31,8 +31,8 @@ public abstract partial class TimelineLayer<TModel> : RearrangeableListItem<TMod
 
     protected abstract Drawable CreateTimelineContent();
 
-    private readonly Container<Drawable> headerContainer;
-    private readonly Container<Drawable> timelineContainer;
+    private readonly Container headerContainer;
+    private readonly Container timelineContainer;
 
     protected TimelineLayerHeader Header { get; private set; } = null!;
 
@@ -47,8 +47,8 @@ public abstract partial class TimelineLayer<TModel> : RearrangeableListItem<TMod
         headerContainer.Width = parentTimeline.HeaderWidth;
         timelineContainer.Padding = new MarginPadding { Left = parentTimeline.HeaderWidth };
 
+        timelineContainer.Child = CreateTimelineContent();
         headerContainer.Child = Header = CreateHeader();
-        timelineContainer.Child = Timeline = CreateTimelineContent();
     }
 
     protected override bool IsDraggableAt(Vector2 screenSpacePos) => Header.IsDraggableAt(screenSpacePos);

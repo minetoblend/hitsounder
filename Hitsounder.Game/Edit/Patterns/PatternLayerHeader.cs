@@ -4,20 +4,22 @@ using Hitsounder.Game.UserInterface;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osuTK;
 
 namespace Hitsounder.Game.Edit.Patterns;
 
-public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeader
+public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeader, IHasContextMenu
 {
     private Drawable dragHandle = null!;
     private Box background = null!;
 
     [Resolved]
-    private PatternTimeline layerContainer { get; set; } = null!;
+    private PatternTimeline timeline { get; set; } = null!;
 
     [BackgroundDependencyLoader]
     private void load()
@@ -43,11 +45,11 @@ public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeade
                     {
                         SampleDropped = sample =>
                         {
-                            var index = layerContainer.Layers.IndexOf(layer);
+                            var index = timeline.Layers.IndexOf(layer);
 
                             if (index >= 0)
                             {
-                                layerContainer.Layers.Insert(index, new PatternLayer
+                                timeline.Layers.Insert(index, new PatternLayer
                                 {
                                     Sample = sample
                                 });
@@ -130,4 +132,9 @@ public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeade
     }
 
     public override bool IsDraggableAt(Vector2 screenSpacePos) => dragHandle.Contains(screenSpacePos);
+
+    public MenuItem[]? ContextMenuItems =>
+    [
+        new MenuItem("Delete", () => timeline.Layers.Remove(layer))
+    ];
 }

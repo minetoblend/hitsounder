@@ -1,9 +1,7 @@
 ﻿using Hitsounder.Game.Core.Patterns;
 using Hitsounder.Game.Graphics.Containers;
-using Hitsounder.Game.UserInterface;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Containers;
 
 namespace Hitsounder.Game.Edit.Patterns;
 
@@ -27,6 +25,4 @@ public partial class PatternTimeline : LayeredTimeline<PatternLayer>
     }
 
     protected override TimelineLayer<PatternLayer> CreateLayer(PatternLayer item) => new PatternTimelineLayer(item);
-
-    protected override ScrollContainer<Drawable> CreateScrollContainer() => new HitsounderScrollContainer();
 }
