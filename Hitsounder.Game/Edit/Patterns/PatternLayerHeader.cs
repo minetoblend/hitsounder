@@ -1,4 +1,5 @@
 ﻿using Hitsounder.Game.Core.Patterns;
+using Hitsounder.Game.Graphics.Containers;
 using Hitsounder.Game.UserInterface;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -10,18 +11,13 @@ using osuTK;
 
 namespace Hitsounder.Game.Edit.Patterns;
 
-public partial class PatternLayerHeader : RearrangeableListItem<PatternLayer>
+public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeader
 {
     private Drawable dragHandle = null!;
     private Box background = null!;
 
     [Resolved]
-    private PatternLayerContainer layerContainer { get; set; } = null!;
-
-    public PatternLayerHeader(PatternLayer item)
-        : base(item)
-    {
-    }
+    private PatternTimeline layerContainer { get; set; } = null!;
 
     [BackgroundDependencyLoader]
     private void load()
@@ -47,11 +43,11 @@ public partial class PatternLayerHeader : RearrangeableListItem<PatternLayer>
                     {
                         SampleDropped = sample =>
                         {
-                            var index = layerContainer.Items.IndexOf(Model);
+                            var index = layerContainer.Layers.IndexOf(layer);
 
                             if (index >= 0)
                             {
-                                layerContainer.Items.Insert(index, new PatternLayer
+                                layerContainer.Layers.Insert(index, new PatternLayer
                                 {
                                     Sample = sample
                                 });
@@ -85,19 +81,19 @@ public partial class PatternLayerHeader : RearrangeableListItem<PatternLayer>
                             },
                             new LEDToggle
                             {
-                                Current = Model.EnabledBindable,
+                                Current = layer.EnabledBindable,
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
                                 Padding = new MarginPadding(4)
                             },
                             new VolumeKnob
                             {
-                                Current = Model.VolumeBindable,
+                                Current = layer.VolumeBindable,
                                 StepSize = 0.1f,
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
                             },
-                            new SampleSelectButton(Model)
+                            new SampleSelectButton(layer)
                             {
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
@@ -133,5 +129,5 @@ public partial class PatternLayerHeader : RearrangeableListItem<PatternLayer>
         background.FadeOut(100);
     }
 
-    protected override bool IsDraggableAt(Vector2 screenSpacePos) => dragHandle.Contains(screenSpacePos);
+    public override bool IsDraggableAt(Vector2 screenSpacePos) => dragHandle.Contains(screenSpacePos);
 }

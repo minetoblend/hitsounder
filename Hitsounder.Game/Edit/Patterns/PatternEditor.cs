@@ -11,24 +11,23 @@ public partial class PatternEditor : CompositeDrawable
     [Resolved]
     private Project project { get; set; } = null!;
 
-    private PatternLayerContainer layers = null!;
+    private PatternTimeline timeline = null!;
 
     [BackgroundDependencyLoader]
     private void load()
     {
         RelativeSizeAxes = Axes.Both;
 
-        AddInternal(layers = new PatternLayerContainer
+        AddInternal(timeline = new PatternTimeline
         {
-            RelativeSizeAxes = Axes.Y,
-            Width = 180,
+            RelativeSizeAxes = Axes.Both,
         });
 
         foreach (var sample in project.SkinSamples.Samples)
         {
             var layer = new PatternLayer { Sample = sample };
 
-            layers.Items.Add(layer);
+            timeline.Layers.Add(layer);
         }
     }
 }
