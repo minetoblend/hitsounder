@@ -87,6 +87,12 @@ public partial class DragOperationHandler : Container
                 hoveredDrawables.Add(target);
                 bool wasHovered = lastHoveredDrawables.Remove(target);
 
+                if (target == lastHoverHandledDrawable)
+                {
+                    hoverHandledDrawable = target;
+                    break;
+                }
+
                 if (!wasHovered && target.OnDragEnter(evt))
                 {
                     Logger.Log($"Dragenter {target}");

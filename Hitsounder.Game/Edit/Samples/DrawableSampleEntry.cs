@@ -7,7 +7,6 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
-using osu.Game.Graphics.UserInterface;
 using osuTK;
 
 namespace Hitsounder.Game.Edit.Samples;
@@ -57,7 +56,6 @@ public partial class DrawableSampleEntry(IHitSoundSample sample) : CompositeDraw
                 },
             },
             new HoverHighlight(),
-            new HoverSounds(HoverSampleSet.Button)
         ];
     }
 

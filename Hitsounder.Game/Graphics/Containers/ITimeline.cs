@@ -11,5 +11,7 @@ public interface ITimeline : IDrawable
 
     public float DurationToSize(double duration);
 
+    public double SizeToDuration(float size);
+
     public void ApplyToContent<T>(Container<T> content) where T : Drawable;
 }

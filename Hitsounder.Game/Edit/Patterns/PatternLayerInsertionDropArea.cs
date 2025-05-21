@@ -17,6 +17,7 @@ public partial class PatternLayerInsertionDropArea : CompositeDrawable, IDragEve
         RelativeSizeAxes = Axes.X;
         Height = 10;
         Margin = new MarginPadding { Vertical = -Height / 2f };
+        Padding = new MarginPadding { Horizontal = 10 };
         InternalChild = new Box
         {
             RelativeSizeAxes = Axes.X,

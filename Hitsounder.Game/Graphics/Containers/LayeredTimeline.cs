@@ -32,6 +32,8 @@ public abstract partial class LayeredTimeline<TModel> : CompositeDrawable, ITime
 
     private readonly Container headerContainer;
 
+    public readonly Container TimelineContainer;
+
     protected LayeredTimeline(float headerWidth)
     {
         HeaderWidth = headerWidth;
@@ -39,6 +41,11 @@ public abstract partial class LayeredTimeline<TModel> : CompositeDrawable, ITime
 
         InternalChildren =
         [
+            TimelineContainer = new Container
+            {
+                RelativeSizeAxes = Axes.Both,
+                Padding = new MarginPadding { Left = headerWidth },
+            },
             layerContainer = new LayerContainer(this)
             {
                 RelativeSizeAxes = Axes.Both,

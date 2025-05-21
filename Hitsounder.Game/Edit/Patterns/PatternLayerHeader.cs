@@ -10,6 +10,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osuTK;
+using osuTK.Graphics;
 
 namespace Hitsounder.Game.Edit.Patterns;
 
@@ -75,6 +76,7 @@ public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeade
                                     Size = new Vector2(12),
                                     Icon = FontAwesome.Solid.GripLinesVertical,
                                     Alpha = 0.25f,
+                                    Colour = Color4.Black,
                                     Anchor = Anchor.Centre,
                                     Origin = Anchor.Centre,
                                 },

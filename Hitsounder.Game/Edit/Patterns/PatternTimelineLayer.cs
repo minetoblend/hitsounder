@@ -10,7 +10,7 @@ public partial class PatternTimelineLayer(PatternLayer item) : TimelineLayer<Pat
 
     protected override Drawable CreateTimelineContent()
     {
-        return new TimelineContent();
+        return new PatternTimelineContent(Model);
     }
 
     protected override void LoadComplete()

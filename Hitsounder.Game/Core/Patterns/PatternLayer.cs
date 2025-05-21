@@ -1,11 +1,14 @@
 ﻿using Hitsounder.Game.Core.Samples;
 using osu.Framework.Bindables;
+using osu.Framework.Lists;
 
 namespace Hitsounder.Game.Core.Patterns;
 
 public class PatternLayer
 {
     public readonly Bindable<IHitSoundSample> SampleBindable = new Bindable<IHitSoundSample>();
+
+    public readonly SortedList<PatternSample> Samples = new SortedList<PatternSample>();
 
     public IHitSoundSample Sample
     {

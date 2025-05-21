@@ -1,5 +1,6 @@
 ﻿using Hitsounder.Game.Core.Patterns;
 using Hitsounder.Game.Core.Samples;
+using Hitsounder.Game.Graphics;
 using Hitsounder.Game.Input;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
@@ -40,7 +41,8 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
                 Font = new FontUsage(size: 14),
                 Padding = new MarginPadding { Horizontal = 6, Vertical = 4 },
                 Truncate = true,
-            }
+            },
+            new HoverHighlight()
         ];
 
         sample = layer.SampleBindable.GetBoundCopy();
@@ -59,7 +61,7 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
     public bool OnDragEnter(EditorDragEvent<IHitSoundSample> e)
     {
         this.TransformTo(nameof(BorderThickness), 2f, 100);
-        BorderColour = Color4.White;
+        BorderColour = Color4.Gray;
 
         return true;
     }
@@ -77,6 +79,6 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
 
     protected override bool OnClick(ClickEvent e)
     {
-        return true;
+        return false;
     }
 }
