@@ -64,7 +64,7 @@ public partial class SamplePlaybackIndicator : CompositeDrawable
             if (sample.NewValue != null)
             {
                 background.Colour = ThemeColours.ForSampleSet(sample.NewValue.DefaultSampleSet).Darken(4f);
-                overlay.Colour = ThemeColours.ForSampleSet(sample.NewValue.DefaultSampleSet);
+                overlay.Colour = ThemeColours.ForSampleSet(sample.NewValue.DefaultSampleSet).Lighten(0.5f);
                 content.EdgeEffect = content.EdgeEffect with
                 {
                     Colour = ThemeColours.ForSampleSet(sample.NewValue.DefaultSampleSet).Opacity(0)
