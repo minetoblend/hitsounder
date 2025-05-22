@@ -8,9 +8,9 @@ using osu.Framework.Input.Events;
 
 namespace Hitsounder.Game.Edit.Patterns;
 
-public partial class PatternLayerInsertionDropArea : CompositeDrawable, IDragEventHandler<ISampleCollectionEntry>
+public partial class PatternLayerInsertionDropArea : CompositeDrawable, IDragEventHandler<ISampleFile>
 {
-    public Action<ISampleCollectionEntry>? SampleDropped;
+    public Action<ISampleFile>? SampleDropped;
 
     public PatternLayerInsertionDropArea()
     {
@@ -30,19 +30,19 @@ public partial class PatternLayerInsertionDropArea : CompositeDrawable, IDragEve
         };
     }
 
-    public bool OnDragEnter(EditorDragEvent<ISampleCollectionEntry> e)
+    public bool OnDragEnter(EditorDragEvent<ISampleFile> e)
     {
         InternalChild.Alpha = 0.5f;
 
         return true;
     }
 
-    public void OnDragLeave(EditorDragEvent<ISampleCollectionEntry> e)
+    public void OnDragLeave(EditorDragEvent<ISampleFile> e)
     {
         InternalChild.Alpha = 0;
     }
 
-    public bool OnDrop(EditorDragEvent<ISampleCollectionEntry> e)
+    public bool OnDrop(EditorDragEvent<ISampleFile> e)
     {
         SampleDropped?.Invoke(e.Data);
         return true;

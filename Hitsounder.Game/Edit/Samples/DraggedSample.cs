@@ -1,6 +1,6 @@
-﻿using System;
-using Hitsounder.Game.Core.Samples;
+﻿using Hitsounder.Game.Core.Samples;
 using Hitsounder.Game.Input;
+using Hitsounder.Game.Utils;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -9,7 +9,7 @@ using osuTK;
 
 namespace Hitsounder.Game.Edit.Samples;
 
-public sealed partial class DraggedSample(ISampleCollectionEntry sample) : CompositeDrawable, IDragRepresentation
+public sealed partial class DraggedSample(ISampleEntry sample) : CompositeDrawable, IDragRepresentation
 {
     [BackgroundDependencyLoader]
     private void load()
@@ -45,11 +45,14 @@ public sealed partial class DraggedSample(ISampleCollectionEntry sample) : Compo
 
     public void OnDragStart(Vector2 position)
     {
+        xPos.Current = xPos.Previous = position.X;
+        yPos.Current = yPos.Previous = position.Y;
+
         Position = position;
 
         this.FadeInFromZero(100)
             .ScaleTo(0.5f)
-            .ScaleTo(1f, 300, Easing.OutElasticHalf);
+            .ScaleTo(1f, 500, Easing.OutElasticHalf);
     }
 
     public void OnDragEnd(bool dropped)
@@ -61,13 +64,22 @@ public sealed partial class DraggedSample(ISampleCollectionEntry sample) : Compo
         }
         else
         {
-            this.FadeOut(100)
-                .MoveToOffset(new Vector2(0, 20), 100, Easing.In);
+            this.FadeOut(200)
+                .MoveToOffset(new Vector2(0, 20), 200, Easing.In);
         }
     }
 
+    private readonly SecondOrderDynamics xPos = new SecondOrderDynamics(0, frequency: 3f, damping: 0.75f, response: 1);
+    private readonly SecondOrderDynamics yPos = new SecondOrderDynamics(0, frequency: 3f, damping: 0.75f, response: 1);
+    private readonly SecondOrderDynamics rotation = new SecondOrderDynamics(0, frequency: 3f, damping: 0.75f, response: 1);
+
     public void UpdatePosition(Vector2 position)
     {
-        Position = Vector2.Lerp(position, Position, (float)Math.Exp(-0.02 * Time.Elapsed));
+        Rotation = rotation.Update(Time.Elapsed, (position.X - X) * 0.1f);
+
+        Position = new Vector2(
+            xPos.Update(Time.Elapsed, position.X),
+            yPos.Update(Time.Elapsed, position.Y)
+        );
     }
 }

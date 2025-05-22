@@ -1,6 +1,5 @@
 using System;
 using Hitsounder.Game.Core;
-using Hitsounder.Game.Core.Samples;
 using Microsoft.EntityFrameworkCore;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
@@ -20,8 +19,6 @@ public class DbAccess : IDisposable
     public AppDbContext Context { get; }
 
     public DbSet<ProjectInfo> Projects => Context.Projects;
-
-    public DbSet<SampleCollectionInfo> SampleCollections => Context.SampleCollections;
 
     public void Dispose()
     {

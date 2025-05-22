@@ -6,11 +6,11 @@ namespace Hitsounder.Game.Core.Patterns;
 
 public class PatternLayer
 {
-    public readonly Bindable<ISampleCollectionEntry> SampleBindable = new Bindable<ISampleCollectionEntry>();
+    public readonly Bindable<ISampleFile> SampleBindable = new Bindable<ISampleFile>();
 
     public readonly SortedList<PatternSample> Samples = new SortedList<PatternSample>();
 
-    public ISampleCollectionEntry Sample
+    public ISampleFile Sample
     {
         get => SampleBindable.Value;
         set => SampleBindable.Value = value;

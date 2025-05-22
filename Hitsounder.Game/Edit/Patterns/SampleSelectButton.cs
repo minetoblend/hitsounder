@@ -7,18 +7,20 @@ using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
+using osuTK;
 using osuTK.Graphics;
 
 namespace Hitsounder.Game.Edit.Patterns;
 
-public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable, IDragEventHandler<ISampleCollectionEntry>
+public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable, IDragEventHandler<ISampleFile>
 {
     private SpriteText name = null!;
 
-    private Bindable<ISampleCollectionEntry> sample = null!;
+    private Bindable<ISampleFile> sample = null!;
 
     [BackgroundDependencyLoader]
     private void load()
@@ -27,6 +29,13 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
         Width = 110;
         Masking = true;
         CornerRadius = 4;
+        EdgeEffect = new EdgeEffectParameters
+        {
+            Offset = new Vector2(0, 1),
+            Radius = 2f,
+            Colour = Color4.Black.Opacity(0.2f),
+            Type = EdgeEffectType.Shadow,
+        };
 
         InternalChildren =
         [
@@ -58,7 +67,7 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
         }, true);
     }
 
-    public bool OnDragEnter(EditorDragEvent<ISampleCollectionEntry> e)
+    public bool OnDragEnter(EditorDragEvent<ISampleFile> e)
     {
         this.TransformTo(nameof(BorderThickness), 2f, 100);
         BorderColour = Color4.Gray;
@@ -66,12 +75,12 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
         return true;
     }
 
-    public void OnDragLeave(EditorDragEvent<ISampleCollectionEntry> e)
+    public void OnDragLeave(EditorDragEvent<ISampleFile> e)
     {
         this.TransformTo(nameof(BorderThickness), 0f, 100);
     }
 
-    public bool OnDrop(EditorDragEvent<ISampleCollectionEntry> e)
+    public bool OnDrop(EditorDragEvent<ISampleFile> e)
     {
         layer.Sample = e.Data;
         return true;
@@ -79,6 +88,14 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
 
     protected override bool OnClick(ClickEvent e)
     {
+        var channel = layer.Sample?.Sample?.GetChannel();
+
+        if (channel != null)
+        {
+            channel.Volume.Value = layer.Volume;
+            channel.Play();
+        }
+
         return false;
     }
 }

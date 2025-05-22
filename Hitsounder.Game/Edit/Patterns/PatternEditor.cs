@@ -1,5 +1,6 @@
 ﻿using Hitsounder.Game.Core;
 using Hitsounder.Game.Core.Patterns;
+using Hitsounder.Game.Core.Samples;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -23,8 +24,11 @@ public partial class PatternEditor : CompositeDrawable
             RelativeSizeAxes = Axes.Both,
         });
 
-        foreach (var sample in project.SkinSamples.Samples)
+        foreach (var sample in project.DefaultSkinSamples.GetAllSamples())
         {
+            if (sample.DefaultSampleType == SampleType.SliderSlide)
+                continue;
+
             var layer = new PatternLayer { Sample = sample };
 
             timeline.Layers.Add(layer);

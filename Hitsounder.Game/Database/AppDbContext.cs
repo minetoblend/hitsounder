@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using Hitsounder.Game.Core;
-using Hitsounder.Game.Core.Samples;
 using Microsoft.EntityFrameworkCore;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
@@ -12,10 +11,6 @@ namespace Hitsounder.Game.Database;
 public class AppDbContext : DbContext
 {
     public DbSet<ProjectInfo> Projects { get; set; }
-
-    public DbSet<SampleCollectionInfo> SampleCollections { get; set; }
-
-    public DbSet<HitSoundSampleInfo> HitSoundSamples { get; set; }
 
     public string DbPath { get; }
 

@@ -124,6 +124,16 @@ public partial class Knob<T> : CompositeDrawable, IHasCurrentValue<T>, IHasConte
 
     private double lastPlayback;
 
+    private void playSampleDebounced()
+    {
+        if (Time.Current - lastPlayback > 35)
+        {
+            sample.Frequency.Value = 1 + (NormalizedValue - 0.5) * 0.1;
+            sample.Play();
+            lastPlayback = Time.Current;
+        }
+    }
+
     protected override bool OnScroll(ScrollEvent e)
     {
         if (StepSize != default)
@@ -132,12 +142,8 @@ public partial class Knob<T> : CompositeDrawable, IHasCurrentValue<T>, IHasConte
 
             current.Value += (StepSize * T.CreateChecked(Math.Sign(-e.ScrollDelta.Y)));
 
-            if (previous != current.Value && Time.Current - lastPlayback > 20)
-            {
-                sample.Frequency.Value = 1 + (NormalizedValue - 0.5) * 0.1;
-                sample.Play();
-                lastPlayback = Time.Current;
-            }
+            if (previous != current.Value)
+                playSampleDebounced();
 
             return true;
         }
@@ -149,4 +155,18 @@ public partial class Knob<T> : CompositeDrawable, IHasCurrentValue<T>, IHasConte
     [
         new MenuItem("Reset", () => current.SetDefault())
     ];
+
+    protected override bool OnDragStart(DragStartEvent e) => true;
+
+    protected override void OnDrag(DragEvent e)
+    {
+        base.OnDrag(e);
+
+        var previous = current.Value;
+
+        current.Value += T.CreateChecked(-e.Delta.Y / 250f * float.CreateChecked(current.MaxValue - current.MinValue));
+
+        if (previous != current.Value)
+            playSampleDebounced();
+    }
 }

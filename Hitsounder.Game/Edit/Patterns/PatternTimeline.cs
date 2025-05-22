@@ -23,6 +23,10 @@ public partial class PatternTimeline : LayeredTimeline<PatternLayer>
         ]);
 
         LayersFlow.Padding = new MarginPadding { Top = 12 };
+        LayersFlow.Insert(int.MaxValue, new PatternEndInsertionDropArea().With(d =>
+        {
+            HeaderContainer.Add(d.CreateProxy());
+        }));
     }
 
     protected override void LoadComplete()

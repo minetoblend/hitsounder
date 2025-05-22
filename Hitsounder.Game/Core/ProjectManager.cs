@@ -19,6 +19,8 @@ public class ProjectManager
     private readonly IResourceStore<byte[]> userFiles;
     private readonly DbAccess db;
 
+    private readonly DefaultSkinSamples defaultSkinSamples;
+
     public ProjectManager(Storage storage, DbAccess db, GameHost host, IResourceStore<byte[]> resources, AudioManager audio)
     {
         this.audio = audio;
@@ -28,13 +30,15 @@ public class ProjectManager
         this.db = db;
 
         userFiles = userFiles = new StorageBackedResourceStore(storage.GetStorageForDirectory("projects"));
+
+        var skinResources = new NamespacedResourceStore<byte[]>(resources, "Skins/Legacy");
+
+        defaultSkinSamples = new DefaultSkinSamples(audio.GetSampleStore(skinResources));
     }
 
     public Project CreateProject()
     {
-        var skinResources = new NamespacedResourceStore<byte[]>(resources, "Skins/Legacy");
-
-        var project = new Project(new SkinBackedSampleCollection(skinResources, audio));
+        var project = new Project(defaultSkinSamples);
 
         return project;
     }

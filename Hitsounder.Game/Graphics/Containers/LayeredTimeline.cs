@@ -30,7 +30,7 @@ public abstract partial class LayeredTimeline<TModel> : CompositeDrawable, ITime
         Colour = Color4Extensions.FromHex("#333339")
     };
 
-    private readonly Container headerContainer;
+    protected readonly Container HeaderContainer;
 
     public readonly Container TimelineContainer;
 
@@ -50,7 +50,7 @@ public abstract partial class LayeredTimeline<TModel> : CompositeDrawable, ITime
             {
                 RelativeSizeAxes = Axes.Both,
             },
-            headerContainer = new Container
+            HeaderContainer = new Container
             {
                 RelativeSizeAxes = Axes.Y,
                 Width = headerWidth,
@@ -62,7 +62,7 @@ public abstract partial class LayeredTimeline<TModel> : CompositeDrawable, ITime
         {
             layer.OnLoadComplete += _ =>
             {
-                headerContainer.Add(layer.HeaderProxy);
+                HeaderContainer.Add(layer.HeaderProxy);
             };
         };
     }
@@ -92,7 +92,7 @@ public abstract partial class LayeredTimeline<TModel> : CompositeDrawable, ITime
         {
             public override bool ReceivePositionalInputAt(Vector2 screenSpacePos)
             {
-                return base.ReceivePositionalInputAt(screenSpacePos) && parent.headerContainer.Contains(screenSpacePos);
+                return base.ReceivePositionalInputAt(screenSpacePos) && parent.HeaderContainer.Contains(screenSpacePos);
             }
         }
     }
@@ -116,7 +116,7 @@ public abstract partial class LayeredTimeline<TModel> : CompositeDrawable, ITime
 
     public override bool ReceivePositionalInputAt(Vector2 screenSpacePos) =>
         base.ReceivePositionalInputAt(screenSpacePos)
-        && !headerContainer.Contains(screenSpacePos);
+        && !HeaderContainer.Contains(screenSpacePos);
 
     protected override bool OnScroll(ScrollEvent e)
     {

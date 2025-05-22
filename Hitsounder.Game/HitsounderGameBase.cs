@@ -1,5 +1,4 @@
 using Hitsounder.Game.Core;
-using Hitsounder.Game.Core.Samples;
 using Hitsounder.Game.Database;
 using Hitsounder.Game.Graphics;
 using Hitsounder.Resources;
@@ -48,7 +47,6 @@ namespace Hitsounder.Game
             dependencies.Cache(db = new DbAccess(Storage));
 
             dependencies.CacheAs(ProjectManager = new ProjectManager(Storage, db, Host, Resources, Audio));
-            dependencies.Cache(new SampleCollectionManager(db));
 
             dependencies.Cache(SessionStatics = new SessionStatics());
 

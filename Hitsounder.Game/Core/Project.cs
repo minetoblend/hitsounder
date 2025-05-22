@@ -6,12 +6,12 @@ namespace Hitsounder.Game.Core;
 
 public partial class Project : Component
 {
-    public readonly ISampleCollection SkinSamples;
+    public readonly ISampleDirectory DefaultSkinSamples;
 
-    public Project(ISampleCollection skinSamples)
+    public Project(DefaultSkinSamples defaultSkinSamples)
     {
-        SkinSamples = skinSamples;
+        DefaultSkinSamples = defaultSkinSamples;
     }
 
-    public IEnumerable<ISampleCollection> SampleCollections => [SkinSamples];
+    public IEnumerable<ISampleDirectory> SampleCollections => [DefaultSkinSamples];
 }

@@ -1,3 +1,4 @@
+using Hitsounder.Game.Core.Samples;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -5,13 +6,11 @@ using osu.Framework.Graphics.Containers;
 
 namespace Hitsounder.Game.Edit.Samples;
 
-public partial class SampleBrowserDirectory(SampleTree samples) : SampleBrowserItem
+public partial class SampleBrowserDirectory(ISampleDirectory samples) : SampleBrowserItem
 {
     private readonly Bindable<bool> expanded = new Bindable<bool>();
 
     private FillFlowContainer childFlow = null!;
-
-    private FillFlowContainer content = null!;
 
     [BackgroundDependencyLoader]
     private void load()
@@ -21,7 +20,7 @@ public partial class SampleBrowserDirectory(SampleTree samples) : SampleBrowserI
 
         InternalChildren =
         [
-            content = new FillFlowContainer
+            new FillFlowContainer
             {
                 RelativeSizeAxes = Axes.X,
                 AutoSizeAxes = Axes.Y,
@@ -41,20 +40,6 @@ public partial class SampleBrowserDirectory(SampleTree samples) : SampleBrowserI
                 ]
             }
         ];
-
-        foreach (var entry in samples.Children.Values)
-        {
-            switch (entry)
-            {
-                case SampleTreeSample sample:
-                    childFlow.Insert(1, new SampleBrowserSample(sample.Sample));
-                    break;
-
-                case SampleTree childTree:
-                    childFlow.Insert(0, new SampleBrowserDirectory(childTree));
-                    break;
-            }
-        }
     }
 
     protected override void LoadComplete()
@@ -63,9 +48,32 @@ public partial class SampleBrowserDirectory(SampleTree samples) : SampleBrowserI
 
         expanded.BindValueChanged(expanded =>
         {
+            if (expanded.NewValue)
+                ensureChildren();
+
             childFlow.BypassAutoSizeAxes = expanded.NewValue ? Axes.None : Axes.Both;
         }, true);
 
         Scheduler.AddDelayed(() => InternalChild.FinishTransforms(), 1);
+    }
+
+    private void ensureChildren()
+    {
+        if (childFlow.Count > 0)
+            return;
+
+        foreach (var entry in samples.Children)
+        {
+            switch (entry)
+            {
+                case ISampleFile sample:
+                    childFlow.Insert(1, new SampleBrowserSample(sample));
+                    break;
+
+                case ISampleDirectory childDirectory:
+                    childFlow.Insert(0, new SampleBrowserDirectory(childDirectory));
+                    break;
+            }
+        }
     }
 }

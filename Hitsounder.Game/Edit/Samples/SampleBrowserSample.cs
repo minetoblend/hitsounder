@@ -11,7 +11,7 @@ using osuTK;
 
 namespace Hitsounder.Game.Edit.Samples;
 
-public partial class SampleBrowserSample(ISampleCollectionEntry sample) : SampleBrowserItem
+public partial class SampleBrowserSample(ISampleFile sample) : SampleBrowserItem
 {
     [Resolved]
     private DragOperationHandler dragHandler { get; set; } = null!;
@@ -42,16 +42,17 @@ public partial class SampleBrowserSample(ISampleCollectionEntry sample) : Sample
                                 Icon = FontAwesome.Regular.FileAudio,
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
-                                Margin = new MarginPadding { Right = 4 }
+                                Margin = new MarginPadding { Right = 4 },
+                                Colour = ThemeColours.ForSampleSet(sample.DefaultSampleSet)
                             },
                             new SpriteText
                             {
-                                Text = sample.ShortName,
+                                Text = sample.Name,
                                 Font = new FontUsage(size: 16f),
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
                                 RelativeSizeAxes = Axes.X,
-                                Truncate = true
+                                Truncate = true,
                             }
                         }
                     },

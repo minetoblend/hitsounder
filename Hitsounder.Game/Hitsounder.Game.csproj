@@ -17,7 +17,4 @@
         <PackageReference Include="ppy.osu.Framework" Version="2025.419.0" />
         <PackageReference Include="ppy.osu.Game" Version="2025.424.0" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="IO\" />
-    </ItemGroup>
 </Project>

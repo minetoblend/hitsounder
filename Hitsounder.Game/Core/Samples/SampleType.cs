@@ -7,4 +7,5 @@ public enum SampleType
     Whistle = 2,
     Finish = 3,
     Clap = 4,
+    SliderSlide = 5,
 }

@@ -3,12 +3,12 @@ using Hitsounder.Game.Graphics.Containers;
 using Hitsounder.Game.UserInterface;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
-using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
 
@@ -21,6 +21,8 @@ public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeade
 
     [Resolved]
     private PatternTimeline timeline { get; set; } = null!;
+
+    private Drawable sampleIndicator = null!;
 
     [BackgroundDependencyLoader]
     private void load()
@@ -105,6 +107,37 @@ public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeade
                         ]
                     },
                 ]
+            },
+            sampleIndicator = new Container
+            {
+                RelativeSizeAxes = Axes.Y,
+                Width = 6,
+                Anchor = Anchor.TopRight,
+                Origin = Anchor.TopRight,
+                Padding = new MarginPadding(1),
+                Child = new Container
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Masking = true,
+                    CornerRadius = 1,
+                    Children =
+                    [
+                        new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Height = 0.5f,
+                            Colour = ColourInfo.GradientVertical(Color4.White, Color4.LightGray),
+                        },
+                        new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Height = 0.5f,
+                            Colour = ColourInfo.GradientVertical(Color4.LightGray, Color4.White),
+                            Anchor = Anchor.BottomLeft,
+                            Origin = Anchor.BottomLeft,
+                        }
+                    ]
+                }
             }
         ];
     }
@@ -114,22 +147,21 @@ public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeade
         base.LoadComplete();
 
         Scheduler.AddDelayed(() => FinishTransforms(), 1);
+
+        layer.SampleBindable.BindValueChanged(sample =>
+        {
+            if (sample.NewValue != null)
+                sampleIndicator.Colour = ThemeColours.ForSampleSet(sample.NewValue.DefaultSampleSet);
+        }, true);
     }
 
-    protected override bool OnDragStart(DragStartEvent e)
+    public void OnDragStart()
     {
-        if (!base.OnDragStart(e))
-            return false;
-
         background.FadeTo(0.1f, 100);
-
-        return true;
     }
 
-    protected override void OnDragEnd(DragEndEvent e)
+    public void OnDragEnd()
     {
-        base.OnDragEnd(e);
-
         background.FadeOut(100);
     }
 
