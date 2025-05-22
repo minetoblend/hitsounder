@@ -1,14 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Hitsounder.Game.Core.Samples;
 using Hitsounder.Game.Database;
-using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.IO.Stores;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
 
 namespace Hitsounder.Game.Core;
 
-public partial class ProjectManager : Component
+public class ProjectManager
 {
     private readonly GameHost host;
     private readonly Storage storage;
@@ -28,17 +30,27 @@ public partial class ProjectManager : Component
         userFiles = userFiles = new StorageBackedResourceStore(storage.GetStorageForDirectory("projects"));
     }
 
-    [BackgroundDependencyLoader]
-    private void load()
-    {
-        CreateProject();
-    }
-
     public Project CreateProject()
     {
-        var skinResources = new NamespacedResourceStore<byte[]>(resources, "Samples/Gameplay");
+        var skinResources = new NamespacedResourceStore<byte[]>(resources, "Skins/Legacy");
 
-        var project = new Project(new SkinSampleSource(skinResources, audio));
+        var project = new Project(new SkinBackedSampleCollection(skinResources, audio));
+
+        return project;
+    }
+
+    public List<ProjectInfo> GetProjects(CancellationToken cancellationToken = default)
+    {
+        return db.Context.Projects.ToList();
+    }
+
+    public ProjectInfo Create(string name = "Untitled")
+    {
+        Logger.Log($"Creating new project {name}");
+
+        var project = new ProjectInfo { Name = name, };
+
+        db.Write(ctx => ctx.Projects.Add(project));
 
         return project;
     }

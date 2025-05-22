@@ -25,7 +25,7 @@ public partial class HitSoundEditor(Project project) : Screen
                 RelativeSizeAxes = Axes.Both,
                 Child = new BorderLayout
                 {
-                    Left = new SampleLibrary(),
+                    Left = new SampleBrowser(),
                     Center = new PatternEditor(),
                 }
             }

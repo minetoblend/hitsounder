@@ -1,6 +1,7 @@
 ﻿using Hitsounder.Game.Core;
 using Hitsounder.Game.Edit.Samples;
 using osu.Framework.Allocation;
+using osu.Framework.Graphics;
 
 namespace Hitsounder.Game.Tests.Visual.Edit;
 
@@ -19,6 +20,10 @@ public partial class TestSceneSampleLibrary : HitsounderTestScene
     {
         dependencies.Cache(projectManager.CreateProject());
 
-        Add(new SampleLibrary());
+        Add(new SampleBrowser
+        {
+            RelativeSizeAxes = Axes.Y,
+            Width = 200,
+        });
     }
 }

@@ -7,7 +7,7 @@ public interface IDragRepresentation : IDrawable
 {
     public void OnDragStart(Vector2 position);
 
-    public void OnDragEnd();
+    public void OnDragEnd(bool dropped);
 
     public void UpdatePosition(Vector2 position);
 }

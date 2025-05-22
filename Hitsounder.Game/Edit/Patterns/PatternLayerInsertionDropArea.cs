@@ -8,9 +8,9 @@ using osu.Framework.Input.Events;
 
 namespace Hitsounder.Game.Edit.Patterns;
 
-public partial class PatternLayerInsertionDropArea : CompositeDrawable, IDragEventHandler<IHitSoundSample>
+public partial class PatternLayerInsertionDropArea : CompositeDrawable, IDragEventHandler<ISampleCollectionEntry>
 {
-    public Action<IHitSoundSample>? SampleDropped;
+    public Action<ISampleCollectionEntry>? SampleDropped;
 
     public PatternLayerInsertionDropArea()
     {
@@ -18,29 +18,31 @@ public partial class PatternLayerInsertionDropArea : CompositeDrawable, IDragEve
         Height = 10;
         Margin = new MarginPadding { Vertical = -Height / 2f };
         Padding = new MarginPadding { Horizontal = 10 };
-        InternalChild = new Box
+        InternalChild = new CircularContainer
         {
             RelativeSizeAxes = Axes.X,
-            Height = 1f,
+            Height = 2f,
             Alpha = 0f,
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
+            Masking = true,
+            Child = new Box { RelativeSizeAxes = Axes.Both, }
         };
     }
 
-    public bool OnDragEnter(EditorDragEvent<IHitSoundSample> e)
+    public bool OnDragEnter(EditorDragEvent<ISampleCollectionEntry> e)
     {
         InternalChild.Alpha = 0.5f;
 
         return true;
     }
 
-    public void OnDragLeave(EditorDragEvent<IHitSoundSample> e)
+    public void OnDragLeave(EditorDragEvent<ISampleCollectionEntry> e)
     {
         InternalChild.Alpha = 0;
     }
 
-    public bool OnDrop(EditorDragEvent<IHitSoundSample> e)
+    public bool OnDrop(EditorDragEvent<ISampleCollectionEntry> e)
     {
         SampleDropped?.Invoke(e.Data);
         return true;

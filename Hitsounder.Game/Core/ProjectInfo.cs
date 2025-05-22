@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Hitsounder.Game.Core.Samples;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hitsounder.Game.Core;
@@ -11,7 +13,5 @@ public class ProjectInfo
 
     public required string Name { get; set; }
 
-    public required string BeatmapSetPath { get; set; }
-
-    public required string BeatmapPath { get; set; }
+    public ICollection<SampleCollectionInfo> SampleCollections { get; set; } = new List<SampleCollectionInfo>();
 }

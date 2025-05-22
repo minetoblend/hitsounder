@@ -14,11 +14,11 @@ using osuTK.Graphics;
 
 namespace Hitsounder.Game.Edit.Patterns;
 
-public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable, IDragEventHandler<IHitSoundSample>
+public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable, IDragEventHandler<ISampleCollectionEntry>
 {
     private SpriteText name = null!;
 
-    private Bindable<IHitSoundSample> sample = null!;
+    private Bindable<ISampleCollectionEntry> sample = null!;
 
     [BackgroundDependencyLoader]
     private void load()
@@ -58,7 +58,7 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
         }, true);
     }
 
-    public bool OnDragEnter(EditorDragEvent<IHitSoundSample> e)
+    public bool OnDragEnter(EditorDragEvent<ISampleCollectionEntry> e)
     {
         this.TransformTo(nameof(BorderThickness), 2f, 100);
         BorderColour = Color4.Gray;
@@ -66,12 +66,12 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
         return true;
     }
 
-    public void OnDragLeave(EditorDragEvent<IHitSoundSample> e)
+    public void OnDragLeave(EditorDragEvent<ISampleCollectionEntry> e)
     {
         this.TransformTo(nameof(BorderThickness), 0f, 100);
     }
 
-    public bool OnDrop(EditorDragEvent<IHitSoundSample> e)
+    public bool OnDrop(EditorDragEvent<ISampleCollectionEntry> e)
     {
         layer.Sample = e.Data;
         return true;

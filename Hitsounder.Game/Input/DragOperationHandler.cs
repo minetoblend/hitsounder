@@ -119,12 +119,17 @@ public partial class DragOperationHandler : Container
 
             Logger.Log("Ending drag operation");
 
+            bool dropHandled = false;
+
             if (wasDrop)
             {
                 foreach (var target in hoveredDrawables)
                 {
                     if (target.OnDrop(evt))
+                    {
+                        dropHandled = true;
                         break;
+                    }
                 }
             }
 
@@ -138,7 +143,7 @@ public partial class DragOperationHandler : Container
 
             if (dragRepresentation is IDragRepresentation ghost)
             {
-                ghost.OnDragEnd();
+                ghost.OnDragEnd(dropHandled);
 
                 dragRepresentation.Expire();
 

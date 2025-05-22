@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Hitsounder.Game.Core;
+using Hitsounder.Game.Core.Samples;
 using Microsoft.EntityFrameworkCore;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
@@ -10,6 +11,12 @@ namespace Hitsounder.Game.Database;
 
 public class AppDbContext : DbContext
 {
+    public DbSet<ProjectInfo> Projects { get; set; }
+
+    public DbSet<SampleCollectionInfo> SampleCollections { get; set; }
+
+    public DbSet<HitSoundSampleInfo> HitSoundSamples { get; set; }
+
     public string DbPath { get; }
 
     protected readonly Logger Logger;
@@ -28,8 +35,6 @@ public class AppDbContext : DbContext
 
         Logger = Logger.GetLogger(LoggingTarget.Database);
     }
-
-    public DbSet<ProjectInfo> Projects { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options) =>
         options.UseSqlite($"Data Source={DbPath}")

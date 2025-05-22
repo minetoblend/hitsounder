@@ -1,4 +1,5 @@
 using Hitsounder.Game.Core;
+using Hitsounder.Game.Core.Samples;
 using Hitsounder.Game.Database;
 using Hitsounder.Game.Graphics;
 using Hitsounder.Resources;
@@ -8,7 +9,6 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
 using osu.Game.Configuration;
-using osu.Game.Database;
 using osu.Game.Resources;
 using osuTK;
 
@@ -26,16 +26,9 @@ namespace Hitsounder.Game
 
         public Storage Storage { get; private set; } = null!;
 
-        private RealmAccess realm = null!;
-
         private DbAccess db = null!;
 
         protected SessionStatics SessionStatics { get; private set; } = null!;
-
-        /// <summary>
-        /// The filename of the main client database.
-        /// </summary>
-        public const string CLIENT_DATABASE_FILENAME = @"client.realm";
 
         public override void SetHost(GameHost host)
         {
@@ -52,13 +45,14 @@ namespace Hitsounder.Game
 
             dependencies.CacheAs(Storage);
 
-            dependencies.Cache(realm = new RealmAccess(Storage, CLIENT_DATABASE_FILENAME, Host.UpdateThread));
-
             dependencies.Cache(db = new DbAccess(Storage));
 
             dependencies.CacheAs(ProjectManager = new ProjectManager(Storage, db, Host, Resources, Audio));
+            dependencies.Cache(new SampleCollectionManager(db));
 
             dependencies.Cache(SessionStatics = new SessionStatics());
+
+            dependencies.Cache(new HitsounderIcons(Textures));
 
             base.Content.Add(new DrawSizePreservingFillContainer
             {
@@ -73,6 +67,13 @@ namespace Hitsounder.Game
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
         {
             return dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
+        }
+
+        protected override void Dispose(bool isDisposing)
+        {
+            db.Dispose();
+
+            base.Dispose(isDisposing);
         }
     }
 }

@@ -2,6 +2,9 @@
 
 public enum SampleType
 {
-    Skin,
-    Custom,
+    None = 0,
+    Normal = 1,
+    Whistle = 2,
+    Finish = 3,
+    Clap = 4,
 }

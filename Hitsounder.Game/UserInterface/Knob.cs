@@ -134,6 +134,7 @@ public partial class Knob<T> : CompositeDrawable, IHasCurrentValue<T>, IHasConte
 
             if (previous != current.Value && Time.Current - lastPlayback > 20)
             {
+                sample.Frequency.Value = 1 + (NormalizedValue - 0.5) * 0.1;
                 sample.Play();
                 lastPlayback = Time.Current;
             }
