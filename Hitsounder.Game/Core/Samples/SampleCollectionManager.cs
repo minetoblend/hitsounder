@@ -10,29 +10,29 @@ public class SampleCollectionManager
 {
     private static readonly Dictionary<string, SampleSet> sample_set_keywords = new Dictionary<string, SampleSet>
     {
-        { "normal-", SampleSet.Normal },
-        { "drum-", SampleSet.Drum },
-        { "soft-", SampleSet.Soft },
+        ["normal-"] = SampleSet.Normal,
+        ["drum-"] = SampleSet.Drum,
+        ["soft-"] = SampleSet.Soft,
     };
 
     private static readonly Dictionary<string, SampleType> sample_type_keywords = new Dictionary<string, SampleType>
     {
-        { "hitnormal", SampleType.Normal }, // hitnormal so we don't match normal-... filenames
-        { "whistle", SampleType.Whistle },
-        { "clap", SampleType.Clap },
-        { "finish", SampleType.Finish },
+        ["hitnormal"] = SampleType.Normal, // hitnormal so we don't match normal-... filenames
+        ["whistle"] = SampleType.Whistle,
+        ["clap"] = SampleType.Clap,
+        ["finish"] = SampleType.Finish,
     };
 
-    private Dictionary<string, (SampleSet, SampleType)> sample_defaults_keywords = new Dictionary<string, (SampleSet, SampleType)>
+    private static readonly Dictionary<string, (SampleSet, SampleType)> sample_defaults_keywords = new Dictionary<string, (SampleSet, SampleType)>
     {
-        { "hihat", (SampleSet.Drum, SampleType.Whistle) },
-        { "hi-hat", (SampleSet.Drum, SampleType.Whistle) },
-        { "tom", (SampleSet.Drum, SampleType.Finish) },
-        { "crash", (SampleSet.Soft, SampleType.Finish) },
-        { "cymbal", (SampleSet.Soft, SampleType.Finish) },
-        { "snare", (SampleSet.Normal, SampleType.Normal) },
-        { "kick", (SampleSet.Drum, SampleType.Normal) },
-        { "bass", (SampleSet.Drum, SampleType.Normal) },
+        ["hihat"] = (SampleSet.Drum, SampleType.Whistle),
+        ["hi-hat"] = (SampleSet.Drum, SampleType.Whistle),
+        ["tom"] = (SampleSet.Drum, SampleType.Finish),
+        ["crash"] = (SampleSet.Soft, SampleType.Finish),
+        ["cymbal"] = (SampleSet.Soft, SampleType.Finish),
+        ["snare"] = (SampleSet.Normal, SampleType.Normal),
+        ["kick"] = (SampleSet.Drum, SampleType.Normal),
+        ["bass"] = (SampleSet.Drum, SampleType.Normal),
     };
 
     private readonly DbAccess db;
