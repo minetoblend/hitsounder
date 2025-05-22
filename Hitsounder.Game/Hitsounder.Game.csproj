@@ -5,10 +5,16 @@
         <WarningsAsErrors>Nullable</WarningsAsErrors>
     </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Hitsounder.Resources\Hitsounder.Resources.csproj"/>
+        <ProjectReference Include="..\Hitsounder.Resources\Hitsounder.Resources.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="ppy.osu.Framework" Version="2025.419.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.5" />
+        <PackageReference Include="ppy.osu.Framework" Version="2025.419.0" />
         <PackageReference Include="ppy.osu.Game" Version="2025.424.0" />
     </ItemGroup>
 </Project>

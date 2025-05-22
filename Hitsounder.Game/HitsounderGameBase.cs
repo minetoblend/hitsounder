@@ -1,4 +1,5 @@
 using Hitsounder.Game.Core;
+using Hitsounder.Game.Database;
 using Hitsounder.Game.Graphics;
 using Hitsounder.Resources;
 using osu.Framework.Allocation;
@@ -27,6 +28,8 @@ namespace Hitsounder.Game
 
         private RealmAccess realm = null!;
 
+        private DbAccess db = null!;
+
         protected SessionStatics SessionStatics { get; private set; } = null!;
 
         /// <summary>
@@ -51,8 +54,9 @@ namespace Hitsounder.Game
 
             dependencies.Cache(realm = new RealmAccess(Storage, CLIENT_DATABASE_FILENAME, Host.UpdateThread));
 
-            dependencies.CacheAs(ProjectManager = new ProjectManager(Storage, realm, Host, Resources, Audio, Scheduler));
-            LoadComponent(ProjectManager);
+            dependencies.Cache(db = new DbAccess(Storage));
+
+            dependencies.CacheAs(ProjectManager = new ProjectManager(Storage, db, Host, Resources, Audio));
 
             dependencies.Cache(SessionStatics = new SessionStatics());
 
