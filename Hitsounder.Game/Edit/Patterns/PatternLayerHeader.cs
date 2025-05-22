@@ -3,7 +3,6 @@ using Hitsounder.Game.Graphics.Containers;
 using Hitsounder.Game.UserInterface;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
-using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.Shapes;
@@ -108,37 +107,7 @@ public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeade
                     },
                 ]
             },
-            sampleIndicator = new Container
-            {
-                RelativeSizeAxes = Axes.Y,
-                Width = 6,
-                Anchor = Anchor.TopRight,
-                Origin = Anchor.TopRight,
-                Padding = new MarginPadding(1),
-                Child = new Container
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Masking = true,
-                    CornerRadius = 1,
-                    Children =
-                    [
-                        new Box
-                        {
-                            RelativeSizeAxes = Axes.Both,
-                            Height = 0.5f,
-                            Colour = ColourInfo.GradientVertical(Color4.White, Color4.LightGray),
-                        },
-                        new Box
-                        {
-                            RelativeSizeAxes = Axes.Both,
-                            Height = 0.5f,
-                            Colour = ColourInfo.GradientVertical(Color4.LightGray, Color4.White),
-                            Anchor = Anchor.BottomLeft,
-                            Origin = Anchor.BottomLeft,
-                        }
-                    ]
-                }
-            }
+            sampleIndicator = new SamplePlaybackIndicator(layer)
         ];
     }
 
@@ -147,12 +116,6 @@ public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeade
         base.LoadComplete();
 
         Scheduler.AddDelayed(() => FinishTransforms(), 1);
-
-        layer.SampleBindable.BindValueChanged(sample =>
-        {
-            if (sample.NewValue != null)
-                sampleIndicator.Colour = ThemeColours.ForSampleSet(sample.NewValue.DefaultSampleSet);
-        }, true);
     }
 
     public void OnDragStart()

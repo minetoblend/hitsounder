@@ -88,13 +88,7 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
 
     protected override bool OnClick(ClickEvent e)
     {
-        var channel = layer.Sample?.Sample?.GetChannel();
-
-        if (channel != null)
-        {
-            channel.Volume.Value = layer.Volume;
-            channel.Play();
-        }
+        layer.Play();
 
         return false;
     }

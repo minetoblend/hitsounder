@@ -1,4 +1,5 @@
-﻿using Hitsounder.Game.Core.Samples;
+﻿using System;
+using Hitsounder.Game.Core.Samples;
 using osu.Framework.Bindables;
 using osu.Framework.Lists;
 
@@ -36,5 +37,19 @@ public class PatternLayer
     {
         get => EnabledBindable.Value;
         set => EnabledBindable.Value = value;
+    }
+
+    public event Action? SamplePlayed;
+
+    public void Play()
+    {
+        var channel = Sample?.Sample?.GetChannel();
+        if (channel == null)
+            return;
+
+        channel.Volume.Value = Volume;
+        channel.Play();
+
+        SamplePlayed?.Invoke();
     }
 }
