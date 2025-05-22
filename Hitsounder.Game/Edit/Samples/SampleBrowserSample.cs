@@ -87,6 +87,8 @@ public partial class SampleBrowserSample(ISampleFile sample) : SampleBrowserItem
                 Alpha = 0.25f,
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
+                Colour = ThemeColours.ForSampleSet(sample.DefaultSampleSet),
+                Blending = BlendingParameters.Additive
             };
             AddInternal(box);
 
