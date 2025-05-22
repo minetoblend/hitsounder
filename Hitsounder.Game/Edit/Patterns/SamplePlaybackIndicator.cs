@@ -10,11 +10,11 @@ namespace Hitsounder.Game.Edit.Patterns;
 
 public partial class SamplePlaybackIndicator : CompositeDrawable
 {
-    private PatternLayer layer;
+    private readonly PatternLayer layer;
 
-    private Container content;
-    private Drawable overlay;
-    private Drawable background;
+    private readonly Container content;
+    private readonly Drawable overlay;
+    private readonly Drawable background;
 
     public SamplePlaybackIndicator(PatternLayer layer)
     {
