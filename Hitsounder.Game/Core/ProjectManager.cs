@@ -1,4 +1,5 @@
-﻿using Hitsounder.Game.Core.Samples;
+﻿using System.Collections.Generic;
+using Hitsounder.Game.Core.Samples;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Graphics.Containers;
@@ -47,7 +48,9 @@ public partial class ProjectManager : CompositeComponent, IStorageResourceProvid
 
     public Project CreateProject()
     {
-        var project = new Project(new SkinSampleSource(defaultSkin));
+        var skinResources = new NamespacedResourceStore<byte[]>(resources, "Samples/Gameplay");
+
+        var project = new Project(new SkinSampleSource(skinResources, audio));
 
         return project;
     }
@@ -62,4 +65,9 @@ public partial class ProjectManager : CompositeComponent, IStorageResourceProvid
     IResourceStore<TextureUpload> IStorageResourceProvider.CreateTextureLoaderStore(IResourceStore<byte[]> underlyingStore) => host.CreateTextureLoaderStore(underlyingStore);
 
     #endregion
+
+    public IEnumerable<ProjectInfo> GetProjects()
+    {
+        return new List<ProjectInfo>();
+    }
 }

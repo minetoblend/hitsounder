@@ -1,19 +1,27 @@
 ﻿using System.Collections.Generic;
+using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
+using osu.Framework.IO.Stores;
 using osu.Game.Audio;
-using osu.Game.Skinning;
 
 namespace Hitsounder.Game.Core.Samples;
 
 public class SkinSampleSource : ISampleSource
 {
-    private readonly Skin skin;
+    private readonly ResourceStore<byte[]> store = new ResourceStore<byte[]>();
 
-    public string Name => skin.Name;
+    private readonly ISampleStore sampleStore;
 
-    public SkinSampleSource(Skin skin)
+    public string Name { get; init; } = "Default skin";
+
+    public SkinSampleSource(ResourceStore<byte[]> store, AudioManager audioManager)
     {
-        this.skin = skin;
+        store.AddStore(store);
+        store.AddExtension("mp3");
+        store.AddExtension("wav");
+        store.AddExtension("ogg");
+
+        sampleStore = audioManager.GetSampleStore(store, audioManager.SampleMixer);
 
         foreach (var bank in HitSampleInfo.ALL_BANKS)
         {
@@ -21,14 +29,12 @@ public class SkinSampleSource : ISampleSource
 
             foreach (var addition in HitSampleInfo.ALL_ADDITIONS)
                 loadSample(new HitSampleInfo(addition, bank));
-
-            // loadSample(new HitSampleInfo("sliderslide", bank));
         }
     }
 
     private void loadSample(HitSampleInfo sampleInfo)
     {
-        var sample = skin.GetSample(sampleInfo);
+        var sample = sampleStore.Get($"{sampleInfo.Bank}-{sampleInfo.Name}");
         if (sample != null)
             samples.Add(new SkinSample($"{sampleInfo.Bank}-{sampleInfo.Name}", sample, this));
     }
