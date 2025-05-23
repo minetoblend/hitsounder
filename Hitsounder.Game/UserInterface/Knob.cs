@@ -30,14 +30,14 @@ public partial class Knob<T> : CompositeDrawable, IHasCurrentValue<T>, IHasConte
 
     private Drawable dial = null!;
 
-    private Sample sample = null!;
+    protected Sample Sample = null!;
 
     private Container rangeIndicators = null!;
 
     [BackgroundDependencyLoader]
     private void load(AudioManager audio, TextureStore textures)
     {
-        sample = audio.Samples.Get("UI/notch-tick");
+        Sample = audio.Samples.Get("UI/notch-tick");
 
         Size = new Vector2(24);
         InternalChildren =
@@ -136,10 +136,15 @@ public partial class Knob<T> : CompositeDrawable, IHasCurrentValue<T>, IHasConte
     {
         if (Time.Current - lastPlayback > 35)
         {
-            sample.Frequency.Value = 1 + (NormalizedValue - 0.5) * 0.1;
-            sample.Play();
+            PlaySample();
             lastPlayback = Time.Current;
         }
+    }
+
+    protected virtual void PlaySample()
+    {
+        Sample.Frequency.Value = 1 + (NormalizedValue - 0.5) * 0.1;
+        Sample.Play();
     }
 
     protected override bool OnScroll(ScrollEvent e)
