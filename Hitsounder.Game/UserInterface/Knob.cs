@@ -8,11 +8,11 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Cursor;
-using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
-using osuTK.Graphics;
 using Vector2 = osuTK.Vector2;
 
 namespace Hitsounder.Game.UserInterface;
@@ -28,71 +28,76 @@ public partial class Knob<T> : CompositeDrawable, IHasCurrentValue<T>, IHasConte
         set => current.Current = value;
     }
 
-    private Drawable pointer;
-
-    public Knob()
-    {
-        Size = new Vector2(20);
-        InternalChildren =
-        [
-            new CircularProgress
-            {
-                RelativeSizeAxes = Axes.Both,
-                Progress = 0.75,
-                InnerRadius = 0.1f,
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre,
-                Rotation = -135,
-                Alpha = 0.25f,
-            },
-            new Container
-            {
-                RelativeSizeAxes = Axes.Both,
-                Padding = new MarginPadding(3),
-                Children =
-                [
-                    new CircularContainer
-                    {
-                        RelativeSizeAxes = Axes.Both,
-                        Masking = true,
-                        Child = new Box
-                        {
-                            RelativeSizeAxes = Axes.Both,
-                            Colour = Color4Extensions.FromHex("#222228"),
-                        },
-                        EdgeEffect = new EdgeEffectParameters
-                        {
-                            Offset = new Vector2(0, 2),
-                            Radius = 2f,
-                            Colour = Color4.Black.Opacity(0.2f),
-                            Type = EdgeEffectType.Shadow,
-                        }
-                    },
-                    pointer = new Container
-                    {
-                        RelativeSizeAxes = Axes.Y,
-                        Height = 0.5f,
-                        Width = 0.5f,
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.BottomCentre,
-                        Padding = new MarginPadding { Bottom = 1 },
-                        Child = new Box
-                        {
-                            RelativeSizeAxes = Axes.Both,
-                            EdgeSmoothness = new Vector2(1)
-                        }
-                    }
-                ]
-            }
-        ];
-    }
+    private Drawable dial = null!;
 
     private Sample sample = null!;
 
+    private Container rangeIndicators = null!;
+
     [BackgroundDependencyLoader]
-    private void load(AudioManager audio)
+    private void load(AudioManager audio, TextureStore textures)
     {
         sample = audio.Samples.Get("UI/notch-tick");
+
+        Size = new Vector2(24);
+        InternalChildren =
+        [
+            rangeIndicators = new Container { RelativeSizeAxes = Axes.Both, },
+            new Container
+            {
+                RelativeSizeAxes = Axes.Both,
+                Children =
+                [
+                    new Sprite
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Texture = textures.Get("UI/knob-base"),
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                    },
+                    dial = new Sprite
+                    {
+                        RelativeSizeAxes = Axes.Both,
+                        Texture = textures.Get("UI/knob-dial"),
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                    },
+                ]
+            },
+        ];
+    }
+
+    private void createRangeIndicators()
+    {
+        rangeIndicators.Clear();
+
+        addIndicator(0);
+        addIndicator(1);
+
+        float defaultProgress = float.CreateChecked((current.Default - current.MinValue) / (current.MaxValue - current.MinValue));
+
+        if (defaultProgress is >= 0.05f and <= 0.95f)
+            addIndicator(defaultProgress);
+
+        void addIndicator(float progress)
+        {
+            progress = 1 - progress;
+
+            float angle = MathF.PI * (0.25f - progress * 1.5f);
+
+            var position = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * 0.45f;
+
+            rangeIndicators.Add(new FastCircle
+            {
+                Position = position,
+                Colour = Color4Extensions.FromHex("#A5A5AE"),
+                Alpha = 0.8f,
+                Size = new Vector2(1.5f),
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativePositionAxes = Axes.Both,
+            });
+        }
     }
 
     protected override void LoadComplete()
@@ -101,9 +106,12 @@ public partial class Knob<T> : CompositeDrawable, IHasCurrentValue<T>, IHasConte
 
         current.BindValueChanged(_ =>
         {
-            pointer.RotateTo(-135 + NormalizedValue * 270, 200, Easing.OutExpo);
+            dial.RotateTo(-135 + NormalizedValue * 270, 200, Easing.OutExpo);
         }, true);
-        pointer.FinishTransforms();
+        dial.FinishTransforms();
+
+        createRangeIndicators();
+        current.DefaultChanged += _ => Scheduler.AddOnce(createRangeIndicators);
     }
 
     protected float NormalizedValue

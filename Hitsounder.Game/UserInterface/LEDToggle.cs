@@ -1,10 +1,13 @@
-﻿using osu.Framework.Bindables;
+﻿using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osuTK;
@@ -16,8 +19,6 @@ public partial class LEDToggle : CompositeDrawable, IHasCurrentValue<bool>
 {
     public ColourInfo ActiveColour = Color4Extensions.FromHex("#a6ff66");
 
-    public ColourInfo InactiveColour = Color4Extensions.FromHex("#1a2b1c");
-
     private readonly BindableWithCurrent<bool> current = new BindableWithCurrent<bool>();
 
     public Bindable<bool> Current
@@ -26,31 +27,58 @@ public partial class LEDToggle : CompositeDrawable, IHasCurrentValue<bool>
         set => current.Current = value;
     }
 
-    private CircularContainer led;
+    private Sprite ledOff = null!;
+    private Sprite ledOn = null!;
+    private CircularContainer glow = null!;
 
     public LEDToggle()
     {
-        AutoSizeAxes = Axes.Both;
-        InternalChild = led = new CircularContainer
-        {
-            Size = new Vector2(8),
-            Masking = true,
-            MaskingSmoothness = 2f,
-            BorderThickness = 1.5f,
-            BorderColour = Color4.Gray,
-            EdgeEffect = new EdgeEffectParameters
+        Size = new Vector2(18);
+        Padding = new MarginPadding(4);
+    }
+
+    [BackgroundDependencyLoader]
+    private void load(TextureStore textures)
+    {
+        Colour = ActiveColour;
+        InternalChildren =
+        [
+            glow = new CircularContainer
             {
-                Type = EdgeEffectType.Glow,
-                Radius = 24f
-            },
-            Children =
-            [
-                new Box
+                RelativeSizeAxes = Axes.Both,
+                Masking = true,
+                EdgeEffect = new EdgeEffectParameters
+                {
+                    Radius = 32f,
+                    Colour = ActiveColour.MultiplyAlpha(0f),
+                    Type = EdgeEffectType.Glow,
+                },
+                Child = new Box
                 {
                     RelativeSizeAxes = Axes.Both,
+                    Alpha = 0,
+                    AlwaysPresent = true,
                 }
-            ]
-        };
+            },
+            ledOff = new Sprite
+            {
+                RelativeSizeAxes = Axes.Both,
+                FillMode = FillMode.Fit,
+                Texture = textures.Get("UI/led-off"),
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                Colour = new Color4(0.35f, 0.35f, 0.35f, 1f),
+            },
+            ledOn = new Sprite
+            {
+                RelativeSizeAxes = Axes.Both,
+                FillMode = FillMode.Fit,
+                Texture = textures.Get("UI/led-on"),
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                Blending = BlendingParameters.Additive,
+            }
+        ];
     }
 
     protected override void LoadComplete()
@@ -61,13 +89,15 @@ public partial class LEDToggle : CompositeDrawable, IHasCurrentValue<bool>
         {
             if (active.NewValue)
             {
-                led.FadeColour(ActiveColour, 50)
-                   .FadeEdgeEffectTo(ActiveColour.MultiplyAlpha(0.1f), 100);
+                ledOff.FadeColour(Color4.White, 50);
+                ledOn.FadeIn(50);
+                glow.FadeEdgeEffectTo(0.1f, 50);
             }
             else
             {
-                led.FadeColour(InactiveColour, 50)
-                   .FadeEdgeEffectTo(0, 50);
+                ledOff.FadeColour(new Color4(0.35f, 0.35f, 0.35f, 1f), 50);
+                ledOn.FadeOut(50);
+                glow.FadeEdgeEffectTo(0, 50);
             }
         }, true);
     }

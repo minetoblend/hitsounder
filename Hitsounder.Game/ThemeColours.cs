@@ -11,7 +11,7 @@ public class ThemeColours
     {
         return sampleSet switch
         {
-            SampleSet.Normal => Color4Extensions.FromHex("#5cf7e5"),
+            SampleSet.Normal => Color4Extensions.FromHex("#5cc6f7"),
             SampleSet.Soft => Color4Extensions.FromHex("#923ad6"),
             SampleSet.Drum => Color4Extensions.FromHex("#f7c143"),
             SampleSet.Auto => Color4.Gray,

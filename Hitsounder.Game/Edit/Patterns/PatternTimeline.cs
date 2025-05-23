@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Hitsounder.Game.Core.Patterns;
+using Hitsounder.Game.Graphics;
 using Hitsounder.Game.Graphics.Containers;
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
@@ -14,7 +15,7 @@ namespace Hitsounder.Game.Edit.Patterns;
 public partial class PatternTimeline : LayeredTimeline<PatternLayer>
 {
     public PatternTimeline()
-        : base(180)
+        : base(190)
     {
         TimelineContainer.AddRange([
             new Box
@@ -71,5 +72,14 @@ public partial class PatternTimeline : LayeredTimeline<PatternLayer>
         }
 
         return base.OnKeyDown(e);
+    }
+
+    protected override Drawable CreateBackground()
+    {
+        return new PhysicalPanel
+        {
+            RelativeSizeAxes = Axes.Both,
+            BackgroundColour = Color4Extensions.FromHex("#333339"),
+        };
     }
 }

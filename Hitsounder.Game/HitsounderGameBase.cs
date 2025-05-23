@@ -42,6 +42,8 @@ namespace Hitsounder.Game
             Resources.AddStore(new DllResourceStore(HitsounderResources.ResourceAssembly));
             Resources.AddStore(new DllResourceStore(OsuResources.ResourceAssembly));
 
+            AddFont(Resources, @"Fonts/Inter/Inter-Regular");
+
             dependencies.CacheAs(Storage);
 
             dependencies.Cache(db = new DbAccess(Storage));

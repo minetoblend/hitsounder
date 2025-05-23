@@ -89,7 +89,6 @@ public partial class PatternLayerHeader(PatternLayer layer) : TimelineLayerHeade
                                 Current = layer.EnabledBindable,
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
-                                Padding = new MarginPadding(4)
                             },
                             new VolumeKnob
                             {

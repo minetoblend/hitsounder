@@ -24,7 +24,9 @@ public partial class SamplePlaybackIndicator : CompositeDrawable
         Width = 6;
         Anchor = Anchor.TopRight;
         Origin = Anchor.TopRight;
-        Padding = new MarginPadding { Horizontal = 1, Vertical = 1 };
+        X = -2;
+
+        Padding = new MarginPadding { Horizontal = 1, Vertical = 2 };
         InternalChild = content = new Container
         {
             RelativeSizeAxes = Axes.Both,
@@ -42,6 +44,27 @@ public partial class SamplePlaybackIndicator : CompositeDrawable
                     RelativeSizeAxes = Axes.Both,
                     Blending = BlendingParameters.Additive,
                     Alpha = 0,
+                },
+                new Container
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Padding = new MarginPadding { Horizontal = 0.5f, Vertical = 1f },
+                    Children =
+                    [
+                        new CircularContainer
+                        {
+                            RelativeSizeAxes = Axes.Y,
+                            Width = 1,
+                            Anchor = Anchor.TopRight,
+                            Origin = Anchor.TopRight,
+                            Child = new Box
+                            {
+                                RelativeSizeAxes = Axes.Both,
+                                Alpha = 0.25f,
+                                Colour = Color4.Black,
+                            }
+                        }
+                    ]
                 }
             ],
             EdgeEffect = new EdgeEffectParameters
@@ -80,7 +103,7 @@ public partial class SamplePlaybackIndicator : CompositeDrawable
                .FadeOut(400, Easing.Out);
 
         content.FadeEdgeEffectTo(0.25f)
-               .FadeEdgeEffectTo(0, 400, Easing.Out);
+               .FadeEdgeEffectTo(0, 400, Easing.OutExpo);
     }
 
     protected override void Dispose(bool isDisposing)

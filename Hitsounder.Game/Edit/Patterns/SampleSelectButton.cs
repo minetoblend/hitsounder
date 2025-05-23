@@ -28,29 +28,29 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
         AutoSizeAxes = Axes.Y;
         Width = 110;
         Masking = true;
-        CornerRadius = 4;
-        EdgeEffect = new EdgeEffectParameters
-        {
-            Offset = new Vector2(0, 1),
-            Radius = 2f,
-            Colour = Color4.Black.Opacity(0.2f),
-            Type = EdgeEffectType.Shadow,
-        };
+        CornerRadius = 3;
 
         InternalChildren =
         [
             new Box
             {
                 RelativeSizeAxes = Axes.Both,
-                Colour = Color4Extensions.FromHex("#222228")
+                Colour = Color4Extensions.FromHex("#22222a")
             },
-            name = new SpriteText
+            (name = new SpriteText
             {
                 RelativeSizeAxes = Axes.X,
-                Font = new FontUsage(size: 14),
+                Font = new FontUsage("Inter", size: 14, weight: "Regular"),
                 Padding = new MarginPadding { Horizontal = 6, Vertical = 4 },
+                Colour = Color4Extensions.FromHex("#68cce8"),
                 Truncate = true,
-            },
+                Shadow = true,
+            }).WithEffect(new GlowEffect
+            {
+                Colour = Color4Extensions.FromHex("#68cce8"),
+                BlurSigma = new Vector2(10),
+                Strength = 3f
+            }),
             new HoverHighlight()
         ];
 
