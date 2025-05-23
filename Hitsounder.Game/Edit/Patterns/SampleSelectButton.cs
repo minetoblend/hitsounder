@@ -7,11 +7,9 @@ using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Effects;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
-using osuTK;
 using osuTK.Graphics;
 
 namespace Hitsounder.Game.Edit.Patterns;
@@ -44,12 +42,6 @@ public partial class SampleSelectButton(PatternLayer layer) : CompositeDrawable,
                 Padding = new MarginPadding { Horizontal = 6, Vertical = 4 },
                 Colour = Color4Extensions.FromHex("#68cce8"),
                 Truncate = true,
-                Shadow = true,
-            }).WithEffect(new GlowEffect
-            {
-                Colour = Color4Extensions.FromHex("#68cce8"),
-                BlurSigma = new Vector2(10),
-                Strength = 3f
             }),
             new HoverHighlight()
         ];
